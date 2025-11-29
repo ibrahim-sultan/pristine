@@ -1,0 +1,185 @@
+/* Video Player - Udemy Style */
+.video-player-container {
+  position: relative;
+  width: 100%;
+  background: #000;
+}
+
+.video-embed {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  background: #000;
+}
+
+.video-embed iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.video-wrapper {
+  position: relative;
+  overflow: hidden;
+  background: #000;
+}
+
+.video-wrapper video {
+  width: 100%;
+  display: block;
+}
+
+.video-controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.video-wrapper:hover .video-controls {
+  opacity: 1;
+}
+
+.play-btn {
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+
+.play-btn:hover {
+  transform: scale(1.1);
+}
+
+.video-controls .progress-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.video-controls .progress-bar {
+  flex: 1;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+  cursor: pointer;
+  position: relative;
+}
+
+.video-controls .progress-bar:hover {
+  height: 6px;
+}
+
+.video-controls .progress-fill {
+  height: 100%;
+  background: #0FA776;
+  border-radius: 2px;
+  position: relative;
+}
+
+.video-controls .progress-fill::after {
+  content: '';
+  position: absolute;
+  right: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 12px;
+  background: #0FA776;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.video-controls .progress-bar:hover .progress-fill::after {
+  opacity: 1;
+}
+
+.time-display {
+  color: white;
+  font-size: 0.8rem;
+  font-family: monospace;
+  min-width: 90px;
+}
+
+.fullscreen-btn {
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fullscreen-btn:hover {
+  color: #0FA776;
+}
+
+.video-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  background: #1c1d1f;
+  color: #9da3a7;
+  text-align: center;
+  padding: 2rem;
+}
+
+.video-placeholder svg {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.mark-complete-video {
+  display: block;
+  margin: 1rem auto;
+  padding: 0.75rem 1.5rem;
+  background: #0FA776;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.mark-complete-video:hover {
+  background: #0d8a62;
+}
+
+.completed-message {
+  text-align: center;
+  padding: 0.75rem;
+  color: #5cb85c;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}

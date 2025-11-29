@@ -1,0 +1,129 @@
+/* App Styles */
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+}
+
+/* Page Hero */
+.page-hero {
+  background: linear-gradient(135deg, var(--primary) 0%, #005a9e 100%);
+  color: var(--white);
+  padding: 5rem 0 4rem;
+  text-align: center;
+}
+
+.page-hero-content h1 {
+  color: var(--white);
+  margin-bottom: 1rem;
+}
+
+.page-hero-content p {
+  opacity: 0.9;
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.hero-label {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+/* CTA Box */
+.cta-box {
+  background: linear-gradient(135deg, var(--primary) 0%, #005a9e 100%);
+  color: var(--white);
+  padding: 4rem;
+  border-radius: var(--radius-lg);
+  text-align: center;
+}
+
+.cta-box h2 {
+  color: var(--white);
+  margin-bottom: 1rem;
+}
+
+.cta-box p {
+  opacity: 0.9;
+  margin-bottom: 2rem;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Programs Grid */
+.programs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2rem;
+}
+
+.no-programs {
+  text-align: center;
+  padding: 3rem;
+  background: var(--bg-light);
+  border-radius: var(--radius-lg);
+}
+
+/* Testimonials Grid */
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+/* Section CTA */
+.section-cta {
+  text-align: center;
+  margin-top: 3rem;
+}
+
+/* Text Accent */
+.text-accent {
+  color: var(--accent);
+}
+
+/* Badges */
+.level-badge,
+.category-badge,
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.badge-beginner { background: #d1fae5; color: #065f46; }
+.badge-intermediate { background: #dbeafe; color: #1e40af; }
+.badge-advanced { background: #fce7f3; color: #9d174d; }
+.badge-all { background: #e0e7ff; color: #3730a3; }
+
+.status-badge.pending { background: #fef3c7; color: #92400e; }
+.status-badge.confirmed, .status-badge.active { background: #d1fae5; color: #065f46; }
+.status-badge.completed { background: #dbeafe; color: #1e40af; }
+.status-badge.cancelled { background: #fee2e2; color: #dc2626; }
+.status-badge.new { background: #dbeafe; color: #1e40af; }
+.status-badge.in-progress { background: #fef3c7; color: #92400e; }
+.status-badge.resolved { background: #d1fae5; color: #065f46; }
+
+@media (max-width: 768px) {
+  .page-hero { padding: 3rem 0 2rem; }
+  .cta-box { padding: 2rem; }
+  .programs-grid { grid-template-columns: 1fr; }
+}
