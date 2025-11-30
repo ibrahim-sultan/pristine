@@ -70,9 +70,12 @@ function App() {
         <Route path="/instructor" element={<ProtectedRoute><InstructorDashboard /></ProtectedRoute>} />
         <Route path="/instructor/courses" element={<ProtectedRoute><InstructorDashboard /></ProtectedRoute>} />
         <Route path="/instructor/courses/:programId" element={<ProtectedRoute><CourseManager /></ProtectedRoute>} />
+        
+        {/* Catch all route for SPA */}
+        <Route path="*" element={<Layout><Home /></Layout>} />
       </Routes>
     </AuthProvider>
   );
-}
+};
 
 export default App;

@@ -138,7 +138,8 @@ const paystackRequest = (path, method, data) => {
       headers: {
         Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
         'Content-Type': 'application/json'
-      }
+      },
+      timeout: 10000 // 10 second timeout
     };
 
     const req = https.request(options, (res) => {
@@ -154,6 +155,10 @@ const paystackRequest = (path, method, data) => {
     });
 
     req.on('error', reject);
+    req.on('timeout', () => {
+      req.destroy();
+      reject(new Error('Request timeout'));
+    });
     if (data) req.write(JSON.stringify(data));
     req.end();
   });
@@ -221,31 +226,46 @@ router.post('/initialize', protect, async (req, res) => {
 
     } else {
       // Paystack
-      const reference = `PE_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-      
-      const response = await paystackRequest('/transaction/initialize', 'POST', {
-        email,
-        amount: Math.round(amount * 100), // Paystack uses kobo/cents
-        reference,
-        callback_url: `${process.env.FRONTEND_URL}/payment/verify?reference=${reference}&program=${programId}`,
-        metadata: {
-          programId,
-          userId: req.user._id.toString(),
-          programTitle: program.title
-        }
-      });
-
-      if (!response.status) {
-        return res.status(400).json({ success: false, message: response.message || 'Payment initialization failed' });
+      if (!process.env.PAYSTACK_SECRET_KEY) {
+        return res.status(400).json({ 
+          success: false, 
+          message: 'Paystack not configured. Please add PAYSTACK_SECRET_KEY to environment variables.' 
+        });
       }
 
-      return res.json({
-        success: true,
-        provider: 'paystack',
-        reference,
-        authorization_url: response.data.authorization_url,
-        access_code: response.data.access_code
-      });
+      const reference = `PE_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      
+      try {
+        const response = await paystackRequest('/transaction/initialize', 'POST', {
+          email,
+          amount: Math.round(amount * 100), // Paystack uses kobo/cents
+          reference,
+          callback_url: `${process.env.FRONTEND_URL}/payment/verify?reference=${reference}&program=${programId}`,
+          metadata: {
+            programId,
+            userId: req.user._id.toString(),
+            programTitle: program.title
+          }
+        });
+
+        if (!response.status) {
+          return res.status(400).json({ success: false, message: response.message || 'Payment initialization failed' });
+        }
+
+        return res.json({
+          success: true,
+          provider: 'paystack',
+          reference,
+          authorization_url: response.data.authorization_url,
+          access_code: response.data.access_code
+        });
+      } catch (paystackError) {
+        console.error('Paystack error:', paystackError);
+        return res.status(500).json({ 
+          success: false, 
+          message: 'Paystack service unavailable. Please try again or contact support.' 
+        });
+      }
     }
 
   } catch (error) {
