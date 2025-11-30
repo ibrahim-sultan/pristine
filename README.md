@@ -154,5 +154,62 @@ Pristine/
 - Secondary: #0FA776 (Emerald Green)
 - Accent: #FFC145 (Golden Yellow)
 
+## Deployment (Render)
+
+### Automatic Deployment
+This project includes a `render.yaml` for automatic deployment to Render.
+
+1. **Connect GitHub to Render**
+   - Go to [render.com](https://render.com) and sign up/login
+   - Click "New" → "Blueprint"
+   - Connect your GitHub repository
+
+2. **Configure Environment Variables**
+   After deployment, set these in Render dashboard:
+
+   **Backend (pristine-api):**
+   ```
+   MONGODB_URI=your_mongodb_connection_string
+   JWT_SECRET=your_jwt_secret
+   FRONTEND_URL=https://pristine-frontend.onrender.com
+   EMAIL_USER=your_email@gmail.com
+   EMAIL_PASS=your_app_password
+   ADMIN_EMAIL=admin@yourdomain.com
+   PAYSTACK_PUBLIC_KEY=pk_test_xxx
+   PAYSTACK_SECRET_KEY=sk_test_xxx
+   STRIPE_PUBLIC_KEY=pk_test_xxx
+   STRIPE_SECRET_KEY=sk_test_xxx
+   ```
+
+   **Frontend (pristine-frontend):**
+   ```
+   REACT_APP_API_URL=https://pristine-api.onrender.com/api
+   ```
+
+3. **Seed Database (Optional)**
+   After backend is deployed, run:
+   ```bash
+   # In Render Shell for pristine-api
+   npm run seed
+   ```
+
+### Manual Deployment
+
+#### Backend
+1. Create a new "Web Service" on Render
+2. Connect your GitHub repo
+3. Set Root Directory: `server`
+4. Build Command: `npm install`
+5. Start Command: `npm start`
+6. Add environment variables
+
+#### Frontend
+1. Create a new "Static Site" on Render
+2. Connect your GitHub repo
+3. Set Root Directory: `client`
+4. Build Command: `npm install && npm run build`
+5. Publish Directory: `build`
+6. Add rewrite rule: `/* → /index.html`
+
 ## License
 MIT
