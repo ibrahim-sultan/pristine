@@ -26,8 +26,15 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
+      // Only clear token, don't redirect (let components handle it)
       localStorage.removeItem('token');
-      window.location.href = '/login';
+      localStorage.removeItem('user');
+      // Only redirect if on a protected route (dashboard, admin, etc.)
+      const protectedPaths = ['/dashboard', '/admin', '/instructor', '/learn', '/checkout'];
+      const isProtectedPath = protectedPaths.some(path => window.location.pathname.startsWith(path));
+      if (isProtectedPath) {
+        window.location.href = '/login';
+      }
     }
     return Promise.reject(error);
   }
