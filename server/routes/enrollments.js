@@ -46,12 +46,16 @@ router.post('/', [
       }
     });
 
-    // Send confirmation email
-    await sendEnrollmentConfirmation(enrollment, program);
+    // Send confirmation email (don't block enrollment if email fails)
+    try {
+      await sendEnrollmentConfirmation(enrollment, program);
+    } catch (emailError) {
+      console.error('Email sending failed (non-blocking):', emailError.message);
+    }
 
     res.status(201).json({
       success: true,
-      message: 'Enrollment submitted successfully. Check your email for confirmation.',
+      message: 'Enrollment submitted successfully!',
       enrollment: {
         id: enrollment._id,
         program: program.title,

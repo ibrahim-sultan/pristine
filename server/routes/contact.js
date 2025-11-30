@@ -32,8 +32,12 @@ router.post('/', [
       message
     });
 
-    // Send notification email
-    await sendContactNotification(contact);
+    // Send notification email (don't block submission if email fails)
+    try {
+      await sendContactNotification(contact);
+    } catch (emailError) {
+      console.error('Email notification failed (non-blocking):', emailError.message);
+    }
 
     res.status(201).json({
       success: true,
