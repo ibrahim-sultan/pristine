@@ -69,11 +69,21 @@ const Checkout = () => {
     }
   };
 
-  const formatPrice = (price) => {
+  const getPrice = () => {
+    if (!program?.price) return 0;
+    return typeof program.price === 'object' ? program.price.amount : program.price;
+  };
+
+  const getCurrency = () => {
+    if (!program?.price) return 'USD';
+    return typeof program.price === 'object' ? program.price.currency : 'USD';
+  };
+
+  const formatPrice = (amount) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: 'USD'
-    }).format(price);
+      currency: getCurrency()
+    }).format(amount || getPrice());
   };
 
   if (loading) {
@@ -222,11 +232,11 @@ const Checkout = () => {
             <div className="price-breakdown">
               <div className="price-row">
                 <span>Program Price</span>
-                <span>{formatPrice(program.price)}</span>
+                <span>{formatPrice(getPrice())}</span>
               </div>
               <div className="price-row total">
                 <span>Total</span>
-                <span>{formatPrice(program.price)}</span>
+                <span>{formatPrice(getPrice())}</span>
               </div>
             </div>
 
@@ -241,7 +251,7 @@ const Checkout = () => {
                   Processing...
                 </>
               ) : (
-                `Pay ${formatPrice(program.price)}`
+                `Pay ${formatPrice(getPrice())}`
               )}
             </button>
 

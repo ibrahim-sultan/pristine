@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { programService } from '../services/api';
 import { useAuth } from '../context/AuthContext';
-import Modal from '../components/UI/Modal';
-import EnrollmentForm from '../components/UI/EnrollmentForm';
 import './ProgramDetail.css';
 
 const ProgramDetail = () => {
@@ -12,7 +10,6 @@ const ProgramDetail = () => {
   const { isAuthenticated } = useAuth();
   const [program, setProgram] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [showEnrollModal, setShowEnrollModal] = useState(false);
 
   useEffect(() => {
     const fetchProgram = async () => {
@@ -111,15 +108,9 @@ const ProgramDetail = () => {
                     }
                   }}
                 >
-                  Enroll & Pay Online
+                  Enroll Now
                 </button>
-                <button 
-                  className="btn btn-outline btn-block" 
-                  onClick={() => setShowEnrollModal(true)}
-                >
-                  Request Enrollment
-                </button>
-                <p className="enrollment-note">Pay online for instant access or request enrollment for other payment options</p>
+                <p className="enrollment-note">Secure online payment via Paystack or Stripe</p>
                 <ul className="program-features">
                   {program.features?.map((f, i) => <li key={i}>{f}</li>)}
                 </ul>
@@ -128,10 +119,6 @@ const ProgramDetail = () => {
           </div>
         </div>
       </section>
-
-      <Modal isOpen={showEnrollModal} onClose={() => setShowEnrollModal(false)} size="large">
-        <EnrollmentForm program={program} onClose={() => setShowEnrollModal(false)} />
-      </Modal>
     </div>
   );
 };

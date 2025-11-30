@@ -46,6 +46,7 @@ export const programService = {
   getFeatured: () => api.get('/programs/featured'),
   getByCategory: (category) => api.get(`/programs/category/${category}`),
   getBySlug: (slug) => api.get(`/programs/${slug}`),
+  getById: (id) => api.get(`/programs/id/${id}`),
   create: (data) => api.post('/programs', data),
   update: (id, data) => api.put(`/programs/${id}`, data),
   delete: (id) => api.delete(`/programs/${id}`)

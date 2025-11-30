@@ -75,6 +75,33 @@ router.get('/category/:category', async (req, res) => {
   }
 });
 
+// @route   GET /api/programs/id/:id
+// @desc    Get single program by ID
+// @access  Public
+router.get('/id/:id', async (req, res) => {
+  try {
+    const program = await Program.findById(req.params.id);
+
+    if (!program) {
+      return res.status(404).json({
+        success: false,
+        message: 'Program not found'
+      });
+    }
+
+    res.json({
+      success: true,
+      program
+    });
+  } catch (error) {
+    console.error('Get program by ID error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error fetching program'
+    });
+  }
+});
+
 // @route   GET /api/programs/:slug
 // @desc    Get single program by slug
 // @access  Public
