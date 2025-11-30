@@ -56,6 +56,22 @@ app.use('/api/student', studentRoutes);
 app.use('/api/instructor', instructorRoutes);
 app.use('/api/payments', paymentRoutes);
 
+// Root route
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'Welcome to Pristine Education API',
+    status: 'running',
+    version: '1.0.0',
+    endpoints: {
+      health: '/api/health',
+      auth: '/api/auth',
+      programs: '/api/programs',
+      enrollments: '/api/enrollments',
+      contact: '/api/contact'
+    }
+  });
+});
+
 // Health check route
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'Pristine Education API is running' });
