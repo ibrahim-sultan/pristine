@@ -11,9 +11,12 @@ const { protect } = require('../middleware/auth');
 // @access  Private
 router.get('/dashboard', protect, async (req, res) => {
   try {
-    // Get all enrollments for this user
+    // Get all enrollments for this user (by user id or email)
     const enrollments = await Enrollment.find({
-      'studentInfo.email': req.user.email
+      $or: [
+        { 'studentInfo.email': req.user.email },
+        { user: req.user._id }
+      ]
     }).populate('program', 'title shortDescription category duration thumbnail');
 
     // Get progress for active enrollments

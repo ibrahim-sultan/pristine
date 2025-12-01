@@ -3,6 +3,7 @@ const router = express.Router();
 const { body, validationResult } = require('express-validator');
 const Enrollment = require('../models/Enrollment');
 const Program = require('../models/Program');
+const Progress = require('../models/Progress');
 const { protect, adminOnly } = require('../middleware/auth');
 const { sendEnrollmentConfirmation } = require('../utils/emailService');
 
@@ -165,6 +166,40 @@ router.put('/:id/status', protect, adminOnly, async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Error updating enrollment'
+    });
+  }
+});
+
+// @route   DELETE /api/enrollments/:id
+// @desc    Delete an enrollment (and related progress)
+// @access  Private/Admin
+router.delete('/:id', protect, adminOnly, async (req, res) => {
+  try {
+    const enrollment = await Enrollment.findById(req.params.id);
+
+    if (!enrollment) {
+      return res.status(404).json({
+        success: false,
+        message: 'Enrollment not found'
+      });
+    }
+
+    // Delete any progress records tied to this enrollment's user & program
+    if (enrollment.user && enrollment.program) {
+      await Progress.deleteMany({ user: enrollment.user, program: enrollment.program });
+    }
+
+    await enrollment.deleteOne();
+
+    res.json({
+      success: true,
+      message: 'Enrollment deleted successfully'
+    });
+  } catch (error) {
+    console.error('Delete enrollment error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error deleting enrollment'
     });
   }
 });

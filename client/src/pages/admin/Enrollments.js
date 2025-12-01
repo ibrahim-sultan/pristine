@@ -34,6 +34,22 @@ const Enrollments = () => {
     }
   };
 
+  const deleteEnrollment = async (id) => {
+    const confirmed = window.confirm('Are you sure you want to delete this enrollment? This action cannot be undone.');
+    if (!confirmed) return;
+
+    try {
+      await enrollmentService.delete(id);
+      setEnrollments(prev => prev.filter(e => e._id !== id));
+      if (selectedEnrollment?._id === id) {
+        setSelectedEnrollment(null);
+      }
+    } catch (error) {
+      console.error('Error deleting enrollment:', error);
+      alert('Failed to delete enrollment');
+    }
+  };
+
   const filteredEnrollments = enrollments.filter(e => {
     const statusMatch = filter === 'all' || e.status === filter;
     const paymentMatch = paymentFilter === 'all' || e.paymentStatus === paymentFilter;
@@ -152,6 +168,12 @@ const Enrollments = () => {
                           onClick={() => setSelectedEnrollment(e)}
                         >
                           View
+                        </button>
+                        <button
+                          className="btn btn-sm btn-danger"
+                          onClick={() => deleteEnrollment(e._id)}
+                        >
+                          Delete
                         </button>
                       </div>
                     </td>

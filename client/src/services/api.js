@@ -56,7 +56,8 @@ export const enrollmentService = {
   create: (data) => api.post('/enrollments', data),
   getAll: (params) => api.get('/enrollments', { params }),
   getById: (id) => api.get(`/enrollments/${id}`),
-  updateStatus: (id, data) => api.put(`/enrollments/${id}/status`, data)
+  updateStatus: (id, data) => api.put(`/enrollments/${id}/status`, data),
+  delete: (id) => api.delete(`/enrollments/${id}`)
 };
 
 export const contactService = {
