@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { programService } from '../services/api';
 import Modal from '../components/UI/Modal';
 import EnrollmentForm from '../components/UI/EnrollmentForm';
@@ -9,7 +10,7 @@ const Admissions = () => {
   const [selectedProgram, setSelectedProgram] = useState(null);
   const [showEnrollModal, setShowEnrollModal] = useState(false);
   const [loading, setLoading] = useState(true);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchPrograms = async () => {
       try {
@@ -112,7 +113,16 @@ const Admissions = () => {
       </section>
 
       <Modal isOpen={showEnrollModal} onClose={() => setShowEnrollModal(false)} size="large">
-        <EnrollmentForm program={selectedProgram} onClose={() => setShowEnrollModal(false)} />
+        {selectedProgram && (
+          <EnrollmentForm
+            program={selectedProgram}
+            onClose={() => setShowEnrollModal(false)}
+            onSuccess={() => {
+              setShowEnrollModal(false);
+              navigate(`/checkout/${selectedProgram._id}`);
+            }}
+          />
+        )}
       </Modal>
     </div>
   );

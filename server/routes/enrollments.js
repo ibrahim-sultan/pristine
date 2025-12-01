@@ -46,12 +46,10 @@ router.post('/', [
       }
     });
 
-    // Send confirmation email (don't block enrollment if email fails)
-    try {
-      await sendEnrollmentConfirmation(enrollment, program);
-    } catch (emailError) {
+    // Send confirmation email in background (non-blocking)
+    sendEnrollmentConfirmation(enrollment, program).catch((emailError) => {
       console.error('Email sending failed (non-blocking):', emailError.message);
-    }
+    });
 
     res.status(201).json({
       success: true,

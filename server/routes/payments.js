@@ -177,7 +177,10 @@ router.post('/initialize', protect, async (req, res) => {
     }
 
     const user = await User.findById(req.user._id);
-    const amount = program.price;
+    // Support both new { amount, currency } structure and legacy numeric price
+    const amount = typeof program.price === 'object' && program.price !== null
+      ? program.price.amount
+      : program.price;
     const email = user.email;
 
     // Check if already enrolled
